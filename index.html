@@ -1,613 +1,268 @@
-<!doctype html>
-<html class="has-no-js" lang="en" data-template="home-alt" data-theme="light">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Moving road trips to the electric age. — Lightship</title>
-    <meta name="description" content="Lightship is the first American all-electric recreational vehicle company bringing travel trailers into the electric age.">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightship RV - Enhanced with AI Expert</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'F37Bolton', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f4f4f4;
-            overflow-x: hidden;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        /* Custom Fonts (Lightship Style) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        /* Header */
-        .c-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(15px);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .c-header_logo_svg {
-            height: 28px;
-            width: auto;
-            color: #000;
-        }
-        
-        .c-button {
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             background: #000;
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-        
-        .c-button:hover {
-            background: #333;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        /* Hero Section */
-        .c-hero-home {
+            overflow: hidden;
             height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
+        }
+
+        .video-container {
             position: relative;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
         }
-        
-        .c-hero-home::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://lightshiprv.com/uploads/pages/Homepage/AE1_Cosmos_Edition_DuskHorizon_Homepage_1-1200x750.jpg') center/cover;
-            opacity: 0.4;
-            z-index: 1;
-        }
-        
-        .c-hero-home_content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 0 2rem;
-        }
-        
-        .c-hero-home_title {
-            font-size: clamp(4rem, 10vw, 8rem);
-            font-weight: 700;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-            letter-spacing: -2px;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 4rem;
-            opacity: 0.9;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-        
-        /* AI Expert Integration Section */
-        .ai-expert-section {
-            background: white;
-            padding: 4rem 2rem;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .ai-expert-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .ai-expert-intro {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 3rem;
-            font-weight: 300;
-        }
-        
-        .ai-buttons-container {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 3rem;
-        }
-        
-        .ai-expert-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 16px;
-            padding: 20px 32px;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            min-width: 280px;
-            justify-content: center;
-        }
-        
-        .ai-expert-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .ai-expert-button:hover::before {
-            left: 100%;
-        }
-        
-        .ai-expert-button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
-        }
-        
-        .ai-expert-button:active {
-            transform: translateY(-2px) scale(0.98);
-        }
-        
-        .ai-expert-button .ai-icon {
-            width: 24px;
-            height: 24px;
-            animation: pulse 2s infinite;
-        }
-        
-        .explore-button {
-            background: linear-gradient(135deg, #f4f4f4 0%, #e8e8e8 100%);
-            color: #333;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        .explore-button:hover {
-            background: linear-gradient(135deg, #e8e8e8 0%, #ddd 100%);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .or-divider {
-            font-size: 1.1rem;
-            color: #999;
-            font-weight: 500;
-            position: relative;
-        }
-        
-        .or-divider::before,
-        .or-divider::after {
-            content: '';
+
+        .background-video {
             position: absolute;
             top: 50%;
-            width: 40px;
-            height: 1px;
-            background: #ddd;
-        }
-        
-        .or-divider::before { left: -50px; }
-        .or-divider::after { right: -50px; }
-        
-        /* AI Features Showcase */
-        .ai-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            text-align: left;
-        }
-        
-        .ai-feature {
-            background: #f9f9f9;
-            padding: 2rem;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .ai-feature h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-        
-        .ai-feature p {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        
-        /* Content Sections */
-        .content-section {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #333;
-            letter-spacing: -1px;
-        }
-        
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.4s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-        }
-        
-        .product-image {
+            left: 50%;
             width: 100%;
-            height: 240px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: 1;
         }
-        
-        .product-image::after {
-            content: '';
+
+        .overlay-content {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            right: 0;
-            height: 60px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.1));
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            background: linear-gradient(
+                180deg, 
+                rgba(0,0,0,0.3) 0%, 
+                rgba(0,0,0,0.1) 50%, 
+                rgba(0,0,0,0.4) 100%
+            );
         }
-        
-        .product-content {
-            padding: 2rem;
-        }
-        
-        .product-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .product-price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-top: 1.5rem;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 4rem 2rem;
+
+        .header {
             text-align: center;
         }
-        
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        /* Demo Badge */
-        .demo-badge {
-            position: fixed;
-            top: 100px;
-            left: 20px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 300;
             color: white;
-            padding: 10px 18px;
+            letter-spacing: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        .hero-text {
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .ai-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .ai-button {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 18px 45px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .ai-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        .ai-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-header {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .modal-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e8f4f8;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
             border-radius: 25px;
-            font-size: 13px;
-            font-weight: 600;
-            z-index: 999;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-            animation: bounce 3s infinite;
+            padding: 12px 30px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
         }
-        
-        /* Responsive Design */
+
         @media (max-width: 768px) {
-            .ai-buttons-container {
-                flex-direction: column;
-                gap: 1rem;
+            .overlay-content {
+                padding: 30px 20px;
             }
             
-            .ai-expert-button,
-            .explore-button {
-                min-width: 100%;
-                max-width: 320px;
+            .logo {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
             }
             
-            .or-divider::before,
-            .or-divider::after {
-                display: none;
+            .hero-text {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
             }
             
-            .demo-badge {
-                left: 10px;
-                top: 80px;
-                font-size: 11px;
-                padding: 8px 14px;
+            .ai-button {
+                padding: 15px 35px;
+                font-size: 1rem;
             }
             
-            .c-hero-home_title {
-                font-size: 3rem;
+            .modal-content {
+                padding: 30px 20px;
+                margin: 10px;
             }
-        }
-        
-        /* Loading Animation for AI Button */
-        .ai-expert-button.loading {
-            pointer-events: none;
-        }
-        
-        .ai-expert-button.loading .ai-icon {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-
 <body>
-    <!-- Demo Badge -->
-    <div class="demo-badge">
-        🚀 Revolutionary AI Integration Demo
+    <div class="video-container">
+        <!-- Lightship's Original Video -->
+        <video 
+            class="background-video" 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            preload="auto">
+            <source src="https://player.vimeo.com/progressive_redirect/playback/1062977538/rendition/1080p/file.mp4" type="video/mp4">
+        </video>
+
+        <div class="overlay-content">
+            <div class="header">
+                <div class="logo">LIGHTSHIP</div>
+                <div class="hero-text">Go Further</div>
+            </div>
+
+            <div class="ai-section">
+                <button class="ai-button" onclick="openDemo()">
+                    Chart Your Path Forward - Speak With Our AI Professional
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Header -->
-    <header class="c-header">
-        <div class="c-header_logo">
-            <a href="/" class="c-header_logo_link">
-                <svg class="c-header_logo_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 795.99 214.01" fill="currentColor">
-                    <path d="M0,105.769H17.5071v89.131h48.1318v16.981H0V105.769Z"/>
-                    <path d="M94.5442,105.769h17.5068v106.102h-17.5068V105.769Z"/>
-                    <path d="M153.447,135.483c0-17.619,14.655-31.833,32.82-31.833s32.819,14.214,32.819,31.833v2.119h-17.507v-2.119c0-8.28-6.786-14.852-15.312-14.852s-15.313,6.582-15.313,14.852v46.684c0,8.28,6.787,14.852,15.313,14.852s15.312-6.582,15.312-14.852v-14.852h-15.312v-16.98h32.819v31.832c0,17.619-14.655,31.833-32.819,31.833s-32.82-14.214-32.82-31.833v-46.684h0Z"/>
-                    <path d="M260.482,105.769h17.507v44.566h30.635v-44.566h17.507v106.102h-17.507v-44.565h-30.635v44.565h-17.507V105.769Z"/>
-                    <path d="M360.488,105.769h65.639v16.981h-24.071v89.131h-17.507V122.75h-24.071v-16.981h.01Z"/>
-                    <path d="M453.313,182.167v-2.119h17.507v2.119c0,8.064,6.998,14.852,15.312,14.852s15.312-6.788,15.312-14.43c0-9.545-5.249-12.311-17.942-16.127-19.691-5.945-29.097-15.49-29.097-32.039s14.22-30.773,31.727-30.773,31.727,13.793,31.727,30.773v3.179h-17.507v-3.179c0-7.642-6.341-13.792-14.22-13.792s-14.22,6.366-14.22,13.792c0,8.917,5.249,12.311,16.627,15.706,18.165,5.729,30.412,13.576,30.412,32.47,0,17.187-14.654,31.411-32.819,31.411s-32.819-14.214-32.819-31.833v-.01Z"/>
-                    <path d="M558.163,105.769h17.507v44.566h30.635v-44.566h17.507v106.102h-17.507v-44.565h-30.635v44.565h-17.507V105.769Z"/>
-                    <path d="M668.323,105.769h17.507v106.102h-17.507V105.769Z"/>
-                    <path d="M763.171,105.769h-32.82v106.102h17.507v-33.951h15.313c18.164,0,32.819-14.224,32.819-31.833v-8.485c0-17.619-14.655-31.833-32.819-31.833Zm15.312,40.318c0,8.27-6.776,14.852-15.312,14.852v.01h-15.313v-38.199h15.313c8.525,0,15.312,6.572,15.312,14.852v8.485Z"/>
-                </svg>
-            </a>
-        </div>
-        <a class="c-button" href="https://reserve.lightshiprv.com" target="_blank">Configure</a>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="c-hero-home">
-        <div class="c-hero-home_content">
-            <h1 class="c-hero-home_title">Go Further</h1>
-            <p class="hero-subtitle">The AE.1™ Cosmos Edition has arrived</p>
-        </div>
-    </section>
-
-    <!-- AI Expert Integration Section -->
-    <section class="ai-expert-section">
-        <div class="ai-expert-container">
-            <p class="ai-expert-intro">
-                Experience the future of travel trailer discovery
-            </p>
-            
-            <div class="ai-buttons-container">
-                <button class="ai-expert-button" id="aiExpertBtn">
-                    <svg class="ai-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C13.1 2 14 2.9 14 4V10C14 11.1 13.1 12 12 12S10 11.1 10 10V4C10 2.9 10.9 2 12 2ZM21 12C21 16.97 16.97 21 12 21S3 16.97 3 12V11H5V12C5 15.87 8.13 19 12 19S19 15.87 19 12V11H21V12ZM7 10H5C5 6.69 7.69 4 11 4V6C8.79 6 7 7.79 7 10ZM19 10C19 7.79 17.21 6 15 6V4C18.31 4 21 6.69 21 10H19Z"/>
-                    </svg>
-                    Ask Our Lightship AI Expert
-                </button>
+    <!-- Demo Modal -->
+    <div class="demo-modal" id="demoModal">
+        <div class="modal-content">
+            <div class="modal-header">🚀 AI Travel Professional</div>
+            <div class="modal-text">
+                "Welcome to the future of RV exploration! I'm your dedicated Lightship AI Professional, here to help you discover everything about our revolutionary electric travel trailers.<br><br>
                 
-                <span class="or-divider">or</span>
+                Whether you're curious about range capabilities, charging infrastructure, interior configurations, or planning your next adventure route - I have comprehensive knowledge about every aspect of the Lightship experience.<br><br>
                 
-                <a href="#products" class="ai-expert-button explore-button">
-                    <svg class="ai-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L3.09 8.26L12 14L20.91 8.26L12 2ZM21 16L12 22L3 16L12 10L21 16Z"/>
-                    </svg>
-                    Explore Trailers
-                </a>
+                <strong>Ready to explore the possibilities?</strong> In the full version, you'd be speaking directly with me using advanced voice AI technology. No typing, no waiting - just natural conversation about your travel dreams."
             </div>
-            
-            <div class="ai-features">
-                <div class="ai-feature">
-                    <h3>🎯 Real Specifications</h3>
-                    <p>Get detailed reliability data, component information, and real-world performance metrics - not just marketing fluff.</p>
-                </div>
-                <div class="ai-feature">
-                    <h3>🚀 Future Technology</h3>
-                    <p>Discover how our electric propulsion, solar systems, and smart features represent the future of travel.</p>
-                </div>
-                <div class="ai-feature">
-                    <h3>💬 Natural Conversation</h3>
-                    <p>This isn't a chatbot - have a real conversation about what matters to you in a travel trailer.</p>
-                </div>
-            </div>
+            <button class="close-btn" onclick="closeDemo()">Experience More</button>
         </div>
-    </section>
-
-    <!-- Products Section -->
-    <section class="content-section" id="products">
-        <h2 class="section-title">AE.1 Cosmos Edition</h2>
-        <p style="text-align: center; font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
-            The AE.1™ Cosmos Edition delivers the most range and solar capacity of any available travel trailer. 
-            It's made for those who want to get the most out of every moment in wild and unforgettable places.
-        </p>
-        
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-image" style="background-image: url('https://lightshiprv.com/uploads/products/AE1-Amos_Lightship_Homepage-1200x750.jpg');"></div>
-                <div class="product-content">
-                    <h3 class="product-title">AE.1 Atmos</h3>
-                    <p>Built around our Aero-Electric design, equipped with TrekDrive™ vehicle assist, integrated solar roof panels and dual battery system providing 300 miles estimated range.</p>
-                    <p class="product-price">Starting at $184,000</p>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image" style="background-image: url('https://lightshiprv.com/uploads/products/AE1-Panos-Lightship-Homepage-1200x750.jpg');"></div>
-                <div class="product-content">
-                    <h3 class="product-title">AE.1 Panos</h3>
-                    <p>Features our Aero-Electric design with TrekDrive™ vehicle assist, integrated solar panels and single battery providing 140 mile estimated range.</p>
-                    <p class="product-price">Starting at $151,000</p>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image" style="background-image: url('https://lightshiprv.com/uploads/products/AE1-Terros-Lightship_Homepage-1200x750.jpg');"></div>
-                <div class="product-content">
-                    <h3 class="product-title">AE.1 Terros</h3>
-                    <p>Utilizes our Aero-Electric design with integrated solar roof panels and single battery. Perfect all-electric trailer for traditional tow vehicles.</p>
-                    <p class="product-price">Starting at $125,000</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2025 Lightship. All rights reserved.</p>
-            <p style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
-                🚀 <strong>Revolutionary AI Integration Demo</strong><br>
-                Powered by Claude & Marty Inc. AI Pathway Technology
-            </p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Smooth scrolling
-        document.querySelector('a[href="#products"]').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('products').scrollIntoView({ 
-                behavior: 'smooth' 
-            });
-        });
+        function openDemo() {
+            document.getElementById('demoModal').style.display = 'flex';
+        }
 
-        // AI Expert Button Interaction
-        document.getElementById('aiExpertBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Add loading state
-            this.classList.add('loading');
-            this.innerHTML = `
-                <svg class="ai-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C13.1 2 14 2.9 14 4V10C14 11.1 13.1 12 12 12S10 11.1 10 10V4C10 2.9 10.9 2 12 2ZM21 12C21 16.97 16.97 21 12 21S3 16.97 3 12V11H5V12C5 15.87 8.13 19 12 19S19 15.87 19 12V11H21V12ZM7 10H5C5 6.69 7.69 4 11 4V6C8.79 6 7 7.79 7 10ZM19 10C19 7.79 17.21 6 15 6V4C18.31 4 21 6.69 21 10H19Z"/>
-                </svg>
-                Connecting to AI Expert...
-            `;
-            
-            // Simulate connection then show demo
-            setTimeout(() => {
-                this.classList.remove('loading');
-                this.innerHTML = `
-                    <svg class="ai-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C13.1 2 14 2.9 14 4V10C14 11.1 13.1 12 12 12S10 11.1 10 10V4C10 2.9 10.9 2 12 2ZM21 12C21 16.97 16.97 21 12 21S3 16.97 3 12V11H5V12C5 15.87 8.13 19 12 19S19 15.87 19 12V11H21V12ZM7 10H5C5 6.69 7.69 4 11 4V6C8.79 6 7 7.79 7 10ZM19 10C19 7.79 17.21 6 15 6V4C18.31 4 21 6.69 21 10H19Z"/>
-                    </svg>
-                    Ask Our Lightship AI Expert
-                `;
-                
-                // Show the demo message
-                alert(`🎤 Welcome to the future of travel. I'm your Lightship AI Expert. 
+        function closeDemo() {
+            document.getElementById('demoModal').style.display = 'none';
+        }
 
-While our trailers inspire dreams of adventure, let me give you the real details about reliability, range, and what makes these trailers actually work.
-
-Let's have a conversation about what we feel is the future of travel trailers...
-
-🚀 LIVE DEMO FEATURES:
-✅ Voice-to-voice conversation
-✅ Real trailer specifications & comparisons  
-✅ Reliability and component details
-✅ Range calculations for your needs
-✅ Solar system explanations
-✅ Financing and delivery timelines
-✅ Connect with sales specialists
-
-This is real AI - not a chatbot!
-
-Revolutionary AI Pathway by Claude & Marty Inc.`);
-            }, 2000);
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.c-header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255,255,255,0.98)';
-                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
-            } else {
-                header.style.background = 'rgba(255,255,255,0.95)';
-                header.style.boxShadow = 'none';
+        // Close modal when clicking outside
+        document.getElementById('demoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDemo();
             }
         });
 
-        // Console branding
-        setTimeout(() => {
-            console.log('%c🚀 Revolutionary AI Integration Demo', 'color: #667eea; font-size: 20px; font-weight: bold;');
-            console.log('%c💎 Powered by Claude & Marty Inc.', 'color: #764ba2; font-size: 14px;');
-            console.log('%c⚡ Making AI Accessible to Everyone!', 'color: #333; font-size: 12px;');
-        }, 1000);
+        // Ensure video plays on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.querySelector('.background-video');
+            
+            // Try to play video
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Auto-play prevented, will play on user interaction");
+                });
+            }
+        });
     </script>
 </body>
 </html>
