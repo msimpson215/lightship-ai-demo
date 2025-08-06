@@ -23,6 +23,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            background: url('https://lightshiprv.com/uploads/pages/Homepage/AE1_Cosmos_Edition_DuskHorizon_Homepage_1-1200x750.jpg') center/cover;
         }
 
         .background-video {
@@ -48,9 +49,9 @@
             justify-content: space-between;
             padding: 60px;
             background: linear-gradient(
-                180deg, 
-                rgba(0,0,0,0.3) 0%, 
-                rgba(0,0,0,0.1) 50%, 
+                180deg,
+                rgba(0,0,0,0.3) 0%,
+                rgba(0,0,0,0.1) 50%,
                 rgba(0,0,0,0.4) 100%
             );
         }
@@ -194,15 +195,19 @@
 </head>
 <body>
     <div class="video-container">
-        <!-- Lightship's Original Video - 39 seconds, full quality -->
+        <!-- Try video first, fallback to background image -->
         <video 
             class="background-video" 
             autoplay 
             muted 
             loop 
             playsinline
-            preload="auto">
+            preload="auto"
+            style="display: none;"
+            onloadeddata="this.style.display='block';"
+            onerror="this.style.display='none';">
             <source src="https://player.vimeo.com/progressive_redirect/playback/1062977538/rendition/1080p/file.mp4" type="video/mp4">
+            <source src="https://vimeo.com/1062977538" type="video/mp4">
         </video>
 
         <div class="overlay-content">
@@ -250,7 +255,7 @@
             }
         });
 
-        // Ensure video plays on load
+        // Video fallback logic
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.querySelector('.background-video');
             
@@ -259,9 +264,18 @@
             
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.log("Auto-play prevented, will play on user interaction");
+                    console.log("Video failed to load, using background image fallback");
+                    video.style.display = 'none';
                 });
             }
+            
+            // Fallback after 5 seconds if video doesn't load
+            setTimeout(() => {
+                if (video.readyState === 0) {
+                    console.log("Video timeout, using background image");
+                    video.style.display = 'none';
+                }
+            }, 5000);
         });
     </script>
 </body>
