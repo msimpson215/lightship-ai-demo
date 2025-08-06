@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lightship RV - Enhanced with AI Expert</title>
+    <title>Lightship RV - Enhanced with AI Professional</title>
     <style>
         * {
             margin: 0;
@@ -111,59 +111,120 @@
             transform: translateY(0);
         }
 
-        .demo-modal {
+        .ai-button.listening {
+            background: rgba(255, 68, 68, 0.25);
+            border-color: rgba(255, 68, 68, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); }
+            50% { box-shadow: 0 12px 40px rgba(255, 68, 68, 0.6); }
+            100% { box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); }
+        }
+
+        .voice-interface {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
             display: none;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            margin: 20px;
-            color: white;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .modal-header {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .modal-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #e8f4f8;
-        }
-
-        .close-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            padding: 12px 30px;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .close-btn:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
+        .voice-interface.active {
+            display: flex;
+        }
+
+        .voice-status {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 20px 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .voice-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .voice-btn.listening {
+            background: rgba(255, 68, 68, 0.3);
+            border-color: #ff4444;
+            animation: pulse 2s infinite;
+        }
+
+        .voice-btn.speaking {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+        }
+
+        .conversation-display {
+            max-width: 80%;
+            max-height: 300px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            color: #333;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .message.user {
+            background-color: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+
+        .message.assistant {
+            background-color: #f1f8e9;
+            border-left-color: #4CAF50;
+        }
+
+        .message.streaming {
+            background-color: #fff3e0;
+            border-left-color: #ff9800;
+            border-left-style: dashed;
         }
 
         @media (max-width: 768px) {
@@ -185,10 +246,20 @@
                 padding: 15px 35px;
                 font-size: 1rem;
             }
-            
-            .modal-content {
-                padding: 30px 20px;
-                margin: 10px;
+
+            .voice-controls {
+                gap: 20px;
+            }
+
+            .voice-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 1.5rem;
+            }
+
+            .conversation-display {
+                max-width: 95%;
+                padding: 15px;
             }
         }
     </style>
@@ -207,7 +278,6 @@
             onloadeddata="this.style.display='block';"
             onerror="this.style.display='none';">
             <source src="https://player.vimeo.com/progressive_redirect/playback/1062977538/rendition/1080p/file.mp4" type="video/mp4">
-            <source src="https://vimeo.com/1062977538" type="video/mp4">
         </video>
 
         <div class="overlay-content">
@@ -217,66 +287,550 @@
             </div>
 
             <div class="ai-section">
-                <button class="ai-button" onclick="openDemo()">
+                <button class="ai-button" id="aiButton" onclick="startVoiceConversation()">
                     Chart Your Path Forward - Speak With Our AI Professional
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Demo Modal -->
-    <div class="demo-modal" id="demoModal">
-        <div class="modal-content">
-            <div class="modal-header">🚀 AI Travel Professional</div>
-            <div class="modal-text">
-                "Welcome to the future of RV exploration! I'm your dedicated Lightship AI Professional, here to help you discover everything about our revolutionary electric travel trailers.<br><br>
-                
-                Whether you're curious about range capabilities, charging infrastructure, interior configurations, or planning your next adventure route - I have comprehensive knowledge about every aspect of the Lightship experience.<br><br>
-                
-                <strong>Ready to explore the possibilities?</strong> In the full version, you'd be speaking directly with me using advanced voice AI technology. No typing, no waiting - just natural conversation about your travel dreams."
-            </div>
-            <button class="close-btn" onclick="closeDemo()">Experience More</button>
+    <!-- Voice Interface -->
+    <div class="voice-interface" id="voiceInterface">
+        <div class="voice-status" id="voiceStatus">🎤 Ready to listen about your travel dreams</div>
+        
+        <div class="voice-controls">
+            <button class="voice-btn" id="micBtn" onclick="toggleMicrophone()" title="Start/Stop Microphone">🎤</button>
+            <button class="voice-btn" id="stopBtn" onclick="stopEverything()" title="Stop Everything">🛑</button>
+            <button class="voice-btn" id="exitBtn" onclick="exitVoiceInterface()" title="Exit">❌</button>
+        </div>
+
+        <div class="conversation-display" id="conversationDisplay">
+            <div id="conversationContent"></div>
         </div>
     </div>
 
     <script>
-        function openDemo() {
-            document.getElementById('demoModal').style.display = 'flex';
+        // Voice system state - TIM-APPROVED ARCHITECTURE
+        let isListening = false;
+        let isLoading = false;
+        let isAISpeaking = false;
+        let systemStatus = 'Ready';
+        let recognitionRef = null;
+        let currentAudioRef = null;
+        let streamAbortRef = null;
+        let messages = [];
+        let currentResponse = '';
+
+        // Initialize voice interface
+        function startVoiceConversation() {
+            document.getElementById('voiceInterface').classList.add('active');
+            updateStatus('🎤 Welcome! Click microphone to ask about Lightship RVs');
+            
+            // Add welcome message
+            setTimeout(() => {
+                const welcomeMsg = "Hi! I'm your Lightship AI Professional. I can help you learn about our revolutionary electric travel trailers, their range capabilities, features, and what makes them perfect for your adventures. What would you like to know?";
+                addToConversation('assistant', welcomeMsg);
+                speakTextWith11Labs(welcomeMsg);
+            }, 1000);
         }
 
-        function closeDemo() {
-            document.getElementById('demoModal').style.display = 'none';
+        function exitVoiceInterface() {
+            stopEverything();
+            document.getElementById('voiceInterface').classList.remove('active');
+            document.getElementById('conversationDisplay').style.display = 'none';
+            messages = [];
+            document.getElementById('conversationContent').innerHTML = '';
         }
 
-        // Close modal when clicking outside
-        document.getElementById('demoModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeDemo();
+        function updateStatus(status) {
+            systemStatus = status;
+            document.getElementById('voiceStatus').textContent = status;
+        }
+
+        function updateButtonStates() {
+            const micBtn = document.getElementById('micBtn');
+            const aiBtn = document.getElementById('aiButton');
+            
+            micBtn.classList.toggle('listening', isListening);
+            micBtn.classList.toggle('speaking', isAISpeaking);
+            aiBtn.classList.toggle('listening', isListening);
+        }
+
+        function addToConversation(role, content) {
+            const display = document.getElementById('conversationDisplay');
+            const contentDiv = document.getElementById('conversationContent');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.innerHTML = `<strong>${role === 'user' ? 'You' : 'Lightship AI'}:</strong> ${content}`;
+            
+            contentDiv.appendChild(messageDiv);
+            display.style.display = 'block';
+            display.scrollTop = display.scrollHeight;
+
+            // Add to messages array
+            messages.push({ role, content });
+        }
+
+        // 🚀 STOP EVERYTHING FUNCTION - TIM-PROOF
+        function stopEverything() {
+            console.log('🛑 Stopping all systems...');
+            
+            // Stop AI speaking
+            if (currentAudioRef) {
+                currentAudioRef.pause();
+                currentAudioRef = null;
+                isAISpeaking = false;
             }
-        });
+            
+            // Stop browser speech
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+            }
+            
+            // Stop microphone
+            if (recognitionRef) {
+                recognitionRef.stop();
+                recognitionRef = null;
+                isListening = false;
+            }
+            
+            // Stop API streaming
+            if (streamAbortRef) {
+                streamAbortRef.abort();
+                streamAbortRef = null;
+            }
+            
+            isLoading = false;
+            currentResponse = '';
+            updateStatus('🛑 Stopped - Ready to continue');
+            updateButtonStates();
+            
+            console.log('🛑 All systems stopped cleanly');
+        }
+
+        function toggleMicrophone() {
+            if (isListening) {
+                stopEverything();
+            } else {
+                startListening();
+            }
+        }
+
+        function startListening() {
+            // Stop any existing recognition first
+            if (recognitionRef) {
+                recognitionRef.stop();
+                recognitionRef = null;
+            }
+
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+                recognitionRef = new SpeechRecognition();
+                
+                // 🚀 OPTIMIZED SETTINGS - TIM APPROVED
+                recognitionRef.continuous = false;
+                recognitionRef.interimResults = false;
+                recognitionRef.lang = 'en-US';
+                recognitionRef.maxAlternatives = 1;
+
+                // 20 second auto-cutoff (professional timing)
+                const timeoutId = setTimeout(() => {
+                    if (recognitionRef) {
+                        recognitionRef.stop();
+                        recognitionRef = null;
+                        isListening = false;
+                        updateStatus('⏱️ Listening timeout - click microphone to continue');
+                        updateButtonStates();
+                    }
+                }, 20000);
+
+                recognitionRef.onstart = () => {
+                    isListening = true;
+                    updateStatus('🎤 Listening... Ask me about Lightship features');
+                    updateButtonStates();
+                    console.log('✅ Microphone started');
+                };
+
+                recognitionRef.onresult = (event) => {
+                    clearTimeout(timeoutId);
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    console.log('✅ Speech recognized:', transcript);
+                    
+                    isListening = false;
+                    updateStatus('🔄 Processing your question...');
+                    updateButtonStates();
+                    
+                    // Clean up immediately after getting result
+                    if (recognitionRef) {
+                        recognitionRef.stop();
+                        recognitionRef = null;
+                    }
+                    
+                    // 🚀 CHECK FOR "EXCUSE ME" INTERRUPT + POLITE RESTART
+                    if (transcript.includes('excuse me') || transcript.includes('stop')) {
+                        console.log('🛑 Interrupt command detected');
+                        updateStatus('🛑 Yes, what can I help you with?');
+                        stopEverything();
+                        
+                        // Add polite acknowledgment
+                        setTimeout(() => {
+                            updateStatus('🎤 Ready - What would you like to know?');
+                            const politeResponse = 'Yes, what can I help you with?';
+                            addToConversation('assistant', politeResponse);
+                            speakTextWith11Labs(politeResponse);
+                        }, 500);
+                        return;
+                    }
+                    
+                    // Process the speech
+                    if (transcript.trim()) {
+                        addToConversation('user', transcript);
+                        sendToAI();
+                    }
+                };
+
+                recognitionRef.onerror = (event) => {
+                    clearTimeout(timeoutId);
+                    isListening = false;
+                    updateButtonStates();
+                    
+                    if (recognitionRef) {
+                        recognitionRef.stop();
+                        recognitionRef = null;
+                    }
+                    
+                    // 🚀 CLEAN ERROR HANDLING - NO CONSOLE SPAM
+                    switch(event.error) {
+                        case 'no-speech':
+                            updateStatus('🔇 No speech detected - try again');
+                            console.log('ℹ️ No speech - normal operation');
+                            break;
+                        case 'network':
+                            updateStatus('📡 Network error with microphone');
+                            console.error('❌ Network error with speech recognition');
+                            break;
+                        case 'not-allowed':
+                            updateStatus('🚫 Microphone access denied - please allow microphone');
+                            console.error('❌ Microphone permission denied');
+                            break;
+                        default:
+                            updateStatus('❌ Speech recognition error - try again');
+                            console.error('❌ Speech error:', event.error);
+                    }
+                };
+
+                recognitionRef.onend = () => {
+                    clearTimeout(timeoutId);
+                    isListening = false;
+                    updateButtonStates();
+                    
+                    if (recognitionRef) {
+                        recognitionRef = null;
+                    }
+                    
+                    if (!isLoading && !isAISpeaking) {
+                        updateStatus('🎤 Click microphone to continue our conversation');
+                    }
+                    console.log('✅ Speech recognition ended cleanly');
+                };
+
+                try {
+                    recognitionRef.start();
+                } catch (error) {
+                    console.error('❌ Failed to start speech recognition:', error);
+                    isListening = false;
+                    updateStatus('🚫 Microphone unavailable');
+                    updateButtonStates();
+                }
+            } else {
+                updateStatus('🚫 Speech recognition not supported in this browser');
+                alert('Speech recognition not supported in this browser. Please use Chrome, Edge, or Safari.');
+            }
+        }
+
+        // Send message to AI with streaming support
+        async function sendToAI() {
+            const requestStart = Date.now(); // 🚀 TIMING FOR TIM
+            isLoading = true;
+            currentResponse = '';
+            updateStatus('🧠 Lightship AI thinking...');
+            
+            // Create new abort controller for this request
+            streamAbortRef = new AbortController();
+            
+            try {
+                // Prepare messages with Lightship-specific system prompt
+                const apiMessages = [
+                    {
+                        role: 'system', 
+                        content: 'You are a knowledgeable Lightship RV AI Professional. You help customers understand our revolutionary electric travel trailers - the AE.1 Atmos, Panos, and Terros models. You know about our range capabilities (300 miles for Atmos, 140 miles for Panos), TrekDrive vehicle assist technology, solar roof panels, charging infrastructure, interior configurations, and what makes these trailers perfect for electric and sustainable travel. Give brief, complete, conversational responses perfect for voice chat about RVs and electric travel. Always finish your thoughts completely.'
+                    },
+                    ...messages
+                ];
+
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: apiMessages
+                    }),
+                    signal: streamAbortRef.signal
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to get AI response');
+                }
+
+                const reader = response.body?.getReader();
+                if (!reader) {
+                    throw new Error('Failed to get response reader');
+                }
+
+                let fullResponse = '';
+                const streamStart = Date.now();
+                updateStatus('🧠 Lightship AI responding...');
+
+                // Show streaming message
+                const streamingDiv = document.createElement('div');
+                streamingDiv.className = 'message streaming';
+                streamingDiv.id = 'streamingMessage';
+                streamingDiv.innerHTML = '<strong>Lightship AI (thinking):</strong> <span id="streamingText">...</span>';
+                document.getElementById('conversationContent').appendChild(streamingDiv);
+                document.getElementById('conversationDisplay').scrollTop = document.getElementById('conversationDisplay').scrollHeight;
+
+                try {
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        
+                        if (done) break;
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        const lines = chunk.split('\n');
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = line.slice(6);
+                                
+                                try {
+                                    const parsed = JSON.parse(data);
+                                    const content = parsed.content;
+                                    const fullText = parsed.fullResponse;
+                                    
+                                    if (content && fullText) {
+                                        fullResponse = fullText;
+                                        // Update streaming display
+                                        const streamingText = document.getElementById('streamingText');
+                                        if (streamingText) {
+                                            streamingText.textContent = fullResponse + '...';
+                                        }
+                                    }
+                                } catch (parseError) {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                } finally {
+                    reader.releaseLock();
+                }
+
+                // 🚀 TIMING LOGS FOR TIM
+                const requestEnd = Date.now();
+                const totalTime = requestEnd - requestStart;
+                const streamTime = requestEnd - streamStart;
+                console.log(`🚀 Total AI Request: ${totalTime}ms`);
+                console.log(`🚀 Streaming Phase: ${streamTime}ms`);
+
+                // Remove streaming message and add final message
+                const streamingMessage = document.getElementById('streamingMessage');
+                if (streamingMessage) {
+                    streamingMessage.remove();
+                }
+
+                // Speak the COMPLETE response
+                if (fullResponse && !streamAbortRef?.signal.aborted) {
+                    addToConversation('assistant', fullResponse);
+                    updateStatus('🗣️ Lightship AI speaking...');
+                    speakTextWith11Labs(fullResponse);
+                }
+                
+            } catch (error) {
+                // Remove streaming message on error
+                const streamingMessage = document.getElementById('streamingMessage');
+                if (streamingMessage) {
+                    streamingMessage.remove();
+                }
+
+                if (error.name === 'AbortError') {
+                    console.log('✅ Request aborted cleanly');
+                    updateStatus('🛑 Stopped');
+                    return;
+                }
+                
+                console.error('❌ AI Error:', error);
+                const errorMessage = 'Sorry, I had a technical issue. Please try asking again.';
+                addToConversation('assistant', errorMessage);
+                updateStatus('❌ Error - Ready to try again');
+                speakTextWith11Labs(errorMessage);
+            }
+            
+            isLoading = false;
+            streamAbortRef = null;
+        }
+
+        async function speakTextWith11Labs(text) {
+            const voiceStart = Date.now(); // 🚀 VOICE TIMING
+            
+            try {
+                isAISpeaking = true;
+                updateStatus('🎙️ Generating professional voice...');
+                updateButtonStates();
+                
+                const response = await fetch('/api/elevenlabs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        voice_type: 'professional' // 🚀 LOCKED TO PROFESSIONAL FEMALE VOICE
+                    })
+                });
+                
+                const voiceGenerated = Date.now();
+                console.log(`🚀 11Labs Generation: ${voiceGenerated - voiceStart}ms`);
+                
+                if (response.ok) {
+                    const audioBlob = await response.blob();
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    currentAudioRef = audio;
+                    
+                    updateStatus('🔊 Speaking...');
+                    
+                    audio.onloadeddata = () => {
+                        audio.play().catch(error => {
+                            console.error('❌ Audio play failed:', error);
+                            updateStatus('🔊 Using backup voice...');
+                            speakTextBrowser(text);
+                        });
+                    };
+                    
+                    audio.onended = () => {
+                        URL.revokeObjectURL(audioUrl);
+                        currentAudioRef = null;
+                        isAISpeaking = false;
+                        updateStatus('🎤 Ready - What else can I help with?');
+                        updateButtonStates();
+                        
+                        const voiceEnd = Date.now();
+                        console.log(`🚀 Total Voice Time: ${voiceEnd - voiceStart}ms`);
+                        
+                        // 🚀 FASTER RESTART TIMING - CHATGPT SPEED!
+                        setTimeout(() => {
+                            if (!isLoading && !isListening) {
+                                // Don't auto-start listening - wait for user click
+                                updateStatus('🎤 Click microphone for your next question');
+                            }
+                        }, 800);
+                    };
+                    
+                    audio.onerror = () => {
+                        console.error('❌ Audio playback error');
+                        URL.revokeObjectURL(audioUrl);
+                        currentAudioRef = null;
+                        isAISpeaking = false;
+                        updateStatus('🔊 Using backup voice...');
+                        updateButtonStates();
+                        speakTextBrowser(text);
+                    };
+                    
+                } else {
+                    console.warn('⚠️ 11Labs unavailable - using browser voice');
+                    updateStatus('🔊 Using backup voice...');
+                    speakTextBrowser(text);
+                }
+            } catch (error) {
+                console.error('❌ 11Labs error:', error);
+                isAISpeaking = false;
+                updateStatus('🔊 Using backup voice...');
+                updateButtonStates();
+                speakTextBrowser(text);
+            }
+        }
+
+        function speakTextBrowser(text) {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                isAISpeaking = true;
+                updateStatus('🔊 Speaking with browser voice...');
+                updateButtonStates();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                const voices = speechSynthesis.getVoices();
+                
+                // 🚀 CONSISTENT FEMALE VOICE SELECTION
+                const preferredVoice = voices.find(voice => 
+                    voice.name.includes('Samantha') || 
+                    voice.name.includes('Karen') ||
+                    voice.name.includes('Victoria') ||
+                    voice.name.includes('Fiona')
+                );
+                
+                if (preferredVoice) {
+                    utterance.voice = preferredVoice;
+                }
+                
+                utterance.rate = 0.95;
+                utterance.pitch = 1.0;
+                utterance.volume = 1;
+                
+                utterance.onend = () => {
+                    isAISpeaking = false;
+                    updateStatus('🎤 Ready - What else about Lightship RVs?');
+                    updateButtonStates();
+                    setTimeout(() => {
+                        if (!isLoading && !isListening) {
+                            updateStatus('🎤 Click microphone for your next question');
+                        }
+                    }, 800);
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
+        }
 
         // Video fallback logic
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.querySelector('.background-video');
             
             // Try to play video
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Video failed to load, using background image fallback");
-                    video.style.display = 'none';
-                });
-            }
-            
-            // Fallback after 5 seconds if video doesn't load
-            setTimeout(() => {
-                if (video.readyState === 0) {
-                    console.log("Video timeout, using background image");
-                    video.style.display = 'none';
+            if (video) {
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Video failed to load, using background image fallback");
+                        video.style.display = 'none';
+                    });
                 }
-            }, 5000);
+                
+                // Fallback after 5 seconds if video doesn't load
+                setTimeout(() => {
+                    if (video.readyState === 0) {
+                        console.log("Video timeout, using background image");
+                        video.style.display = 'none';
+                    }
+                }, 5000);
+            }
         });
+
+        // Initialize voices for better browser compatibility
+        if ('speechSynthesis' in window) {
+            speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                speechSynthesis.getVoices();
+            };
+        }
     </script>
 </body>
 </html>
